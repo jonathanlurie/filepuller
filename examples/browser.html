@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>Test</title>
+</head>
+<body>
+  <!-- importing the automatically build module -->
+  <script src="../dist/filepuller.js"></script>
+
+  <p>Open Javascript console.</p>
+  <input type="file" id="fileInput" multiple>
+
+  <script>
+
+    // using FilePuller with distant files JSON file
+    filepuller.read('data/AA0250.json', true, function(err, data){
+      if (err) {
+        console.warn(err)
+        return
+      }
+
+      console.log("This is the content of the JSON file:");
+      console.log(JSON.parse(data))
+    })
+
+
+    // using FilePuller with distant files gzipped JSON file
+    filepuller.read('data/AA0250.json.gz', true, function(err, data){
+      if (err) {
+        console.warn(err)
+        return
+      }
+
+      console.log("This is the content of the gzipped JSON file:");
+      console.log(JSON.parse(data))
+    })
+
+
+    // using a file dialog
+    let fileInput = document.getElementById('fileInput');
+
+    fileInput.addEventListener('change', function(e) {
+      let files = e.target.files;
+
+      if( !files.length ){
+        return;
+      }
+
+      for(let i=0; i<files.length; i++){
+        let reader = new FileReader()
+
+        filepuller.read( files[i], true, function(error, data){
+          if (error) {
+            console.warn(err)
+            return
+          }
+
+          console.log("This is the content of the file:")
+          console.log(JSON.parse(data))
+        })
+      }
+    })
+
+  </script>
+
+</body>
+</html>
